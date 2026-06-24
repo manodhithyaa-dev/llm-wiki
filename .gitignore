@@ -36,3 +36,6 @@ wiki/**
 
 !processed/.gitkeep
 !wiki/.gitkeep
+program.md
+OPENCODE.md
+test.sh
