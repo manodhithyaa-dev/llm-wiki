@@ -1,0 +1,107 @@
+[
+  {
+    "id": "brd-01",
+    "query": "How to book an appointment for a salon service",
+    "expected_doc": "BRD - Mongo ver 1.04",
+    "expected_keywords": ["appointment", "schedul", "service", "book"],
+    "description": "Core salon appointment flow"
+  },
+  {
+    "id": "brd-02",
+    "query": "Payment methods accepted including Google Pay and PhonePe",
+    "expected_doc": "BRD - Mongo ver 1.04",
+    "expected_keywords": ["payment", "Google Pay", "PhonePe", "PayTM"],
+    "description": "Multi-payment method support"
+  },
+  {
+    "id": "brd-03",
+    "query": "Loyalty points and membership discounts for salon customers",
+    "expected_doc": "BRD - Mongo ver 1.04",
+    "expected_keywords": ["loyalty", "membership", "discount", "point"],
+    "description": "Loyalty and membership integration"
+  },
+  {
+    "id": "brd-04",
+    "query": "Service slip generation for staff performance tracking",
+    "expected_doc": "BRD - Mongo ver 1.04",
+    "expected_keywords": ["service slip", "staff", "performance", "revenue"],
+    "description": "Staff performance via service slips"
+  },
+  {
+    "id": "moto-01",
+    "query": "Rackmount DVRS installation procedure for Motorola DVR-LX",
+    "expected_doc": "Motorola solutions DVR-LX P25 Installation Manual",
+    "expected_keywords": ["rackmount", "DVR-LX", "installation", "mount"],
+    "description": "DVR-LX hardware installation"
+  },
+  {
+    "id": "moto-02",
+    "query": "RF energy exposure requirements and FCC compliance for DVR",
+    "expected_doc": "Motorola solutions DVR-LX P25 Installation Manual",
+    "expected_keywords": ["RF", "exposure", "FCC", "MPE"],
+    "description": "RF safety and regulatory compliance"
+  },
+  {
+    "id": "moto-03",
+    "query": "What open source software licenses does the DVR-LX use",
+    "expected_doc": "Motorola solutions DVR-LX P25 Installation Manual",
+    "expected_keywords": ["open source", "license", "software"],
+    "description": "Open source licensing info"
+  },
+  {
+    "id": "moto-04",
+    "query": "How to contact Motorola technical support for DVR-LX",
+    "expected_doc": "Motorola solutions DVR-LX P25 Installation Manual",
+    "expected_keywords": ["CMSO", "technical support", "contact"],
+    "description": "Technical support contact"
+  },
+  {
+    "id": "tread-01",
+    "query": "Treadmill error codes and troubleshooting for T801 model",
+    "expected_doc": "136_Treadmill service manual",
+    "expected_keywords": ["troubleshoot", "error", "T801", "diagnostic"],
+    "description": "Treadmill error troubleshooting"
+  },
+  {
+    "id": "tread-02",
+    "query": "How to replace motor controller PCB on a treadmill",
+    "expected_doc": "136_Treadmill service manual",
+    "expected_keywords": ["motor controller", "PCB", "repair", "replace"],
+    "description": "Motor controller replacement procedure"
+  },
+  {
+    "id": "tread-03",
+    "query": "Preventive maintenance and belt adjustment for treadmill T802",
+    "expected_doc": "136_Treadmill service manual",
+    "expected_keywords": ["preventive", "maintenance", "belt", "adjust"],
+    "description": "Treadmill preventive maintenance"
+  },
+  {
+    "id": "nagra-01",
+    "query": "How to set up Nagra DCS 5000 set top box for the first time",
+    "expected_doc": "120_1.1 STB - Nagra_DCS 5000 (With Physical Smartcard) User Manual",
+    "expected_keywords": ["set top box", "Nagra", "installation", "setup"],
+    "description": "STB first-time installation"
+  },
+  {
+    "id": "nagra-02",
+    "query": "Automatic channel scanning and manual channel setup for digital TV",
+    "expected_doc": "120_1.1 STB - Nagra_DCS 5000 (With Physical Smartcard) User Manual",
+    "expected_keywords": ["channel", "automatic", "manual", "scan"],
+    "description": "Channel installation procedures"
+  },
+  {
+    "id": "nagra-03",
+    "query": "Remote control button functions for INDIGITAL set top box",
+    "expected_doc": "120_1.1 STB - Nagra_DCS 5000 (With Physical Smartcard) User Manual",
+    "expected_keywords": ["remote", "button", "control"],
+    "description": "Remote control functions"
+  },
+  {
+    "id": "nagra-04",
+    "query": "Troubleshooting no signal or poor quality on DCS 5000",
+    "expected_doc": "120_1.1 STB - Nagra_DCS 5000 (With Physical Smartcard) User Manual",
+    "expected_keywords": ["troubleshoot", "signal", "quality", "problem"],
+    "description": "Signal troubleshooting"
+  }
+]

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM Wiki</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #0d1117; color: #c9d1d9; min-height: 100vh;
+    display: flex; justify-content: center;
+  }
+  .container { max-width: 900px; width: 100%; padding: 2rem 1.5rem; }
+  h1 { font-size: 1.6rem; font-weight: 600; margin-bottom: 0.25rem; }
+  .subtitle { color: #8b949e; font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .actions button {
+    padding: 0.5rem 1.2rem; border: 1px solid #30363d; border-radius: 6px;
+    background: #21262d; color: #c9d1d9; font-size: 0.85rem; cursor: pointer;
+    transition: background 0.15s;
+  }
+  .actions button:hover { background: #30363d; }
+  .actions button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .query-box { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+  .query-box input {
+    flex: 1; padding: 0.5rem 0.75rem; border: 1px solid #30363d; border-radius: 6px;
+    background: #161b22; color: #c9d1d9; font-size: 0.9rem; outline: none;
+  }
+  .query-box input:focus { border-color: #58a6ff; }
+  .query-box button {
+    padding: 0.5rem 1.2rem; border: 1px solid #1f6feb; border-radius: 6px;
+    background: #1f6feb; color: #fff; font-size: 0.85rem; font-weight: 500;
+    cursor: pointer; transition: background 0.15s; white-space: nowrap;
+  }
+  .query-box button:hover { background: #388bfd; }
+  .query-box button:disabled { opacity: 0.5; cursor: not-allowed; }
+  #status {
+    font-size: 0.8rem; color: #8b949e; margin-bottom: 0.75rem; min-height: 1.2em;
+  }
+  .output {
+    background: #161b22; border: 1px solid #30363d; border-radius: 6px;
+    padding: 1rem; font-family: "SF Mono", "Cascadia Code", "Fira Code", monospace;
+    font-size: 0.8rem; line-height: 1.5; white-space: pre-wrap; word-break: break-word;
+    max-height: 600px; overflow-y: auto; min-height: 100px;
+  }
+  .output:empty::before { content: "Output will appear here..."; color: #484f58; }
+  .answer { margin-top: 1rem; }
+  .answer h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .answer-content {
+    background: #161b22; border: 1px solid #30363d; border-radius: 6px;
+    padding: 1rem; font-size: 0.9rem; line-height: 1; white-space: pre-wrap;
+    word-break: break-word; max-height: 500px; overflow-y: auto;
+  }
+  .answer-content:empty::before { content: "No answer yet."; color: #484f58; }
+  .answer-content p { margin: 0.25rem 0; }
+  .answer-content ul, .answer-content ol { padding-left: 1.5rem; margin: 0.25rem 0; }
+  .answer-content li { margin: 0; }
+  .answer-content strong { color: #f0f6fc; }
+  .answer-content code {
+    background: #1c2128; padding: 0.15em 0.4em; border-radius: 4px;
+    font-family: "SF Mono", "Cascadia Code", monospace; font-size: 0.8rem;
+  }
+  .answer-content pre {
+    background: #1c2128; border: 1px solid #30363d; border-radius: 6px;
+    padding: 1rem; overflow-x: auto; margin: 0.5rem 0;
+  }
+  .answer-content pre code { background: none; padding: 0; border-radius: 0; }
+  .answer-content a { color: #58a6ff; text-decoration: none; }
+  .answer-content a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>LLM Wiki</h1>
+  <p class="subtitle">File-based multi-modal wiki — web interface</p>
+
+  <div class="actions">
+    <button data-action="ingest">Ingest</button>
+    <button data-action="build">Build</button>
+    <button data-action="lint">Lint</button>
+    <button data-action="test-retrieval">Test Retrieval</button>
+  </div>
+
+  <div class="query-box">
+    <input type="text" id="query-input" placeholder="Ask a question..." autocomplete="off">
+    <button id="query-btn">Ask</button>
+  </div>
+
+  <div id="status"></div>
+  <div class="output" id="output"></div>
+  <div class="answer" id="answer-section" style="display:none">
+    <h3>Answer</h3>
+    <div class="answer-content" id="answer-content"></div>
+  </div>
+</div>
+
+<script>
+const outputEl = document.getElementById('output');
+const statusEl = document.getElementById('status');
+const answerSection = document.getElementById('answer-section');
+const answerContent = document.getElementById('answer-content');
+const queryInput = document.getElementById('query-input');
+
+function setStatus(msg) { statusEl.textContent = msg; }
+
+function appendOutput(text) {
+  if (outputEl.textContent === 'Output will appear here...' || !outputEl.textContent) {
+    outputEl.textContent = text;
+  } else {
+    outputEl.textContent += '\n' + text;
+  }
+  outputEl.scrollTop = outputEl.scrollHeight;
+}
+
+async function runAction(action) {
+  const btn = document.querySelector(`[data-action="${action}"]`);
+  btn.disabled = true;
+  setStatus(`Running ${action}...`);
+  outputEl.textContent = '';
+  answerSection.style.display = 'none';
+
+  try {
+    const res = await fetch(`/api/${action}`, { method: 'POST' });
+    const data = await res.json();
+    appendOutput(data.output || '(no output)');
+    setStatus(`${action} complete.`);
+  } catch (e) {
+    appendOutput(`Error: ${e.message}`);
+    setStatus(`Error running ${action}.`);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+document.querySelectorAll('[data-action]').forEach(btn => {
+  btn.addEventListener('click', () => runAction(btn.dataset.action));
+});
+
+async function askQuestion() {
+  const question = queryInput.value.trim();
+  if (!question) return;
+
+  const askBtn = document.getElementById('query-btn');
+  askBtn.disabled = true;
+  setStatus('Processing query...');
+  outputEl.textContent = '';
+  answerSection.style.display = 'none';
+
+  try {
+    const res = await fetch('/api/query', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question }),
+    });
+    const data = await res.json();
+
+    appendOutput(data.output || '');
+
+    if (data.answer) {
+      answerContent.innerHTML = marked.parse(data.answer);
+      answerSection.style.display = 'block';
+    }
+
+    if (data.results && data.results.length > 0) {
+      appendOutput('\n--- Top Results ---');
+      for (const r of data.results) {
+        appendOutput(`  #${r.rank}  ${r.doc_name} / ${r.page}  (score: ${r.score})`);
+      }
+    }
+
+    setStatus('Query complete.');
+  } catch (e) {
+    appendOutput(`Error: ${e.message}`);
+    setStatus('Error processing query.');
+  } finally {
+    askBtn.disabled = false;
+  }
+}
+
+document.getElementById('query-btn').addEventListener('click', askQuestion);
+queryInput.addEventListener('keydown', e => { if (e.key === 'Enter') askQuestion(); });
+</script>
+</body>
+</html>

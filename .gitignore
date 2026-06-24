@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+# IDE
+.vscode/
+.idea/
+
+# Logs & Results
+*.log
+results.tsv
+ambiguity_test_results.txt
+tree.txt
+
+# Raw Data
+raw/**
+
+# Generated Content
+processed/**
+wiki/**
+
+# Keep folders
+!raw/.gitkeep
+!raw/documents/.gitkeep
+!raw/images/.gitkeep
+!raw/videos/.gitkeep
+
+!processed/.gitkeep
+!wiki/.gitkeep
