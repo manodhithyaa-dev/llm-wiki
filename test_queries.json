@@ -1,33 +1,5 @@
 [
   {
-    "id": "brd-01",
-    "query": "How to book an appointment for a salon service",
-    "expected_doc": "BRD - Mongo ver 1.04",
-    "expected_keywords": ["appointment", "schedul", "service", "book"],
-    "description": "Core salon appointment flow"
-  },
-  {
-    "id": "brd-02",
-    "query": "Payment methods accepted including Google Pay and PhonePe",
-    "expected_doc": "BRD - Mongo ver 1.04",
-    "expected_keywords": ["payment", "Google Pay", "PhonePe", "PayTM"],
-    "description": "Multi-payment method support"
-  },
-  {
-    "id": "brd-03",
-    "query": "Loyalty points and membership discounts for salon customers",
-    "expected_doc": "BRD - Mongo ver 1.04",
-    "expected_keywords": ["loyalty", "membership", "discount", "point"],
-    "description": "Loyalty and membership integration"
-  },
-  {
-    "id": "brd-04",
-    "query": "Service slip generation for staff performance tracking",
-    "expected_doc": "BRD - Mongo ver 1.04",
-    "expected_keywords": ["service slip", "staff", "performance", "revenue"],
-    "description": "Staff performance via service slips"
-  },
-  {
     "id": "moto-01",
     "query": "Rackmount DVRS installation procedure for Motorola DVR-LX",
     "expected_doc": "Motorola solutions DVR-LX P25 Installation Manual",
